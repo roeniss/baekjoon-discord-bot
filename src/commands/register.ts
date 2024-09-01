@@ -35,8 +35,14 @@ export default {
                 return;
             }
 
+            const guildId = interaction.guildId
+            if(!guildId){
+                await interaction.reply("서버 정보를 가져올 수 없습니다. 명령을 취소합니다.")
+                return;
+            }
+
             await interaction.reply({embeds: [getUserInfo(realUser)]})
-            const response = await MongoUtil.addUser(interaction.user.id, boj_id!);
+            const response = await MongoUtil.addUser(interaction.user.id, boj_id!, guildId);
             if (response) {
                 await interaction.followUp("정상적으로 등록되었습니다.")
                 logger.info(`${interaction.user.id} / ${boj_id} 가입 완료`)

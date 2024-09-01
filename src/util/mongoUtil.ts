@@ -1,21 +1,21 @@
-import * as mongoose from 'mongoose';
-import { Mongodb_user_schema } from '../model/mongodb_user_schema.js';
+import {Mongodb_user_schema} from '../model/mongodb_user_schema.js';
 import {logger} from "../logger.js";
 import {Problem} from "../model/problem_schema.js";
 import {BojProblem} from "../model/problem_class.js";
-import {ClientSession} from "typeorm";
 import {Report} from "../model/report_schema.js";
 
 export class MongoUtil{
     //map discordId and bojId, and save it to mongoDB
-    static async addUser(userDiscordId: string, userBojId: string): Promise<boolean>{
+    static async addUser(userDiscordId: string, userBojId: string, guildId: string): Promise<boolean>{
         try{
             const user = new Mongodb_user_schema({
                 discord_id: userDiscordId,
                 boj_id: userBojId,
+                daily_time: null,
+                guild_id: guildId,
             });
             await user.save();
-            logger.info(`Adding user ${userDiscordId} with boj id ${userBojId}`);
+            logger.info(`Adding user ${userDiscordId} with boj id ${userBojId} in guild ${guildId}`);
             return true;
         }catch (error: any){
             logger.error(error.message);
