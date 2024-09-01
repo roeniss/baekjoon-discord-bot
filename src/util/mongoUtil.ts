@@ -127,6 +127,20 @@ export class MongoUtil{
         }
     }
 
+    static async findAllUserInGuild(guildId: string): Promise<any>{
+        try{
+            const users = await Mongodb_user_schema.find({guild_id: guildId});
+            logger.info(`Finding all users in guild ${guildId}`);
+            if (users){
+                return users;
+            }else {
+                return null;
+            }
+        }catch (error: any){
+            logger.error(error.message);
+        }
+    }
+
     //find problem with problemId
     static async findProblemWithProblemId(problemId: number): Promise<any>{
         try {
